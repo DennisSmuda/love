@@ -5,6 +5,7 @@ function GameObject:new(type, x, y, opts)
   self.type = type
   self.dead = false
   self.x, self.y = x, y
+  self.previous_x, self.previous_y = x, y
 
   -- Assign options
   local opts = opts or {}
@@ -24,6 +25,9 @@ function GameObject:update(dt)
 
   local x, y = love.mouse.getPosition()
   self.x, self.y = x/3, y/3
+
+  self.angle = math.atan2(self.y - self.previous_y, self.x - self.previous_x)
+  self.previous_x, self.previous_y = self.x, self.y
 end
 
 function GameObject:draw()

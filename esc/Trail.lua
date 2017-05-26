@@ -12,7 +12,7 @@ function Trail:new(type, x, y, opts)
   end
 
   -- Delete Trail after 15ms
-  timer:after(0.15, function() self.dead = true end)
+  timer:tween(0.6, self, {r = 0}, 'linear', function () self.dead = true end)
 end
 
 function Trail:update(dt)
@@ -20,7 +20,7 @@ function Trail:update(dt)
 end
 
 function Trail:draw()
-  love.graphics.circle('fill', self.x, self.y, self.r)
+  love.graphics.circle('fill', self.x, self.y, self.r + randomp(-2.5, 2.5))
 end
 
 return Trail

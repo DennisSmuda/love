@@ -16,6 +16,7 @@ function love.load()
   game_objects = {}
   game_object = createGameObject('GameObject', 100, 100)
 
+  -- Canvases
   main_canvas = love.graphics.newCanvas(320, 240)
   main_canvas:setFilter('nearest', 'nearest')
   game_object_canvas = love.graphics.newCanvas(320, 240)
@@ -25,6 +26,15 @@ function love.load()
 
   love.window.setMode(960, 720)
   love.graphics.setLineStyle('rough')
+
+  -- Details
+  trail_lines_extra_draw = {}
+  timer:every(0.1, function()
+    for i = 0, 360, 2 do
+      if love.math.random(1, 10) >= 2 then trail_lines_extra_draw[i] = false
+      else trail_lines_extra_draw[i] = true end
+    end
+  end)
 end
 
 
@@ -57,6 +67,9 @@ function love.draw()
   love.graphics.setBlendMode('subtract')
   for i = 0, 360, 2 do
     love.graphics.line(i, 0, i, 240)
+    if trail_lines_extra_draw[i] then
+      love.graphics.line(i+1, 0, i+1, 240)
+    end
   end
   love.graphics.setBlendMode('alpha')
   love.graphics.setCanvas()
@@ -85,7 +98,7 @@ end
 -- Mouse Press
 function love.mousepressed(x, y, button)
   if button == 1 then
-    game_object.dead = true
+    -- game_object.dead = true
   end
 end
 
@@ -97,3 +110,7 @@ function createGameObject(type, x, y, opts)
   return game_object
 end
 
+function randomp(min, max)
+  return (min > max and (love.math.random() * (min -max) + max)) or
+         (love.math.random()*(max - min) + min)
+end
