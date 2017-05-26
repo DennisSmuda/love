@@ -30,7 +30,7 @@ function love.load()
   -- Details
   trail_lines_extra_draw = {}
   timer:every(0.1, function()
-    for i = 0, 360, 2 do
+    for i = -360, 720, 2 do
       if love.math.random(1, 10) >= 2 then trail_lines_extra_draw[i] = false
       else trail_lines_extra_draw[i] = true end
     end
@@ -64,14 +64,16 @@ function love.draw()
     end
   end
 
+  pushRotate(160, 120, game_object.angle + math.pi/2)
   love.graphics.setBlendMode('subtract')
-  for i = 0, 360, 2 do
-    love.graphics.line(i, 0, i, 240)
+  for i = -360, 720, 2 do
+    love.graphics.line(i, -240, i, 480)
     if trail_lines_extra_draw[i] then
-      love.graphics.line(i+1, 0, i+1, 240)
+      love.graphics.line(i+1, -240, i+1, 480)
     end
   end
   love.graphics.setBlendMode('alpha')
+  love.graphics.pop()
   love.graphics.setCanvas()
 
   -- Draw Gameobjects to separate Canvas
@@ -113,4 +115,11 @@ end
 function randomp(min, max)
   return (min > max and (love.math.random() * (min -max) + max)) or
          (love.math.random()*(max - min) + min)
+end
+
+function pushRotate(x, y, r)
+  love.graphics.push()
+  love.graphics.translate(x, y)
+  love.graphics.rotate(r or 0)
+  love.graphics.translate(-x, -y)
 end
