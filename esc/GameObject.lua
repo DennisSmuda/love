@@ -1,5 +1,6 @@
 local GameObject = Object:extend()
 
+
 function GameObject:new(type, x, y, opts)
   self.type = type
   self.dead = false

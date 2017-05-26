@@ -18,6 +18,10 @@ function love.load()
 
   main_canvas = love.graphics.newCanvas(320, 240)
   main_canvas:setFilter('nearest', 'nearest')
+  game_object_canvas = love.graphics.newCanvas(320, 240)
+  game_object_canvas:setFilter('nearest', 'nearest')
+  trail_canvas = love.graphics.newCanvas(320, 240)
+  trail_canvas:setFilter('nearest', 'nearest')
 
   love.window.setMode(960, 720)
   love.graphics.setLineStyle('rough')
@@ -40,14 +44,40 @@ end
 
 -- Draw Function
 function love.draw()
-  love.graphics.setCanvas(main_canvas)
+  -- Draw Trails to separate Canvas
+  love.graphics.setCanvas(trail_canvas)
   love.graphics.clear()
 
   for _, game_object in ipairs(game_objects) do
-    game_object:draw()
+    if game_object.type == 'Trail' then
+      game_object:draw()
+    end
   end
 
+  love.graphics.setBlendMode('subtract')
+  for i = 0, 360, 2 do
+    love.graphics.line(i, 0, i, 240)
+  end
+  love.graphics.setBlendMode('alpha')
   love.graphics.setCanvas()
+
+  -- Draw Gameobjects to separate Canvas
+  love.graphics.setCanvas(game_object_canvas)
+  love.graphics.clear()
+
+  for _, game_object in ipairs(game_objects) do
+    if game_object.type == 'GameObject' then
+      game_object:draw()
+    end
+  end
+  love.graphics.setCanvas()
+
+  love.graphics.setCanvas(main_canvas)
+  love.graphics.clear()
+  love.graphics.draw(trail_canvas, 0, 0)
+  love.graphics.draw(game_object_canvas, 0, 0)
+  love.graphics.setCanvas()
+
   love.graphics.draw(main_canvas, 0, 0, 0, 3, 3)
 end
 
