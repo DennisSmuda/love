@@ -1,6 +1,7 @@
 -- Libs
 Object = require 'lib/classic'
 Timer = require 'lib/timer'
+Vector = require 'lib/vector'
 
 -- Require Classes
 GameObject = require 'GameObject'
