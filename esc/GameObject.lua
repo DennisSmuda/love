@@ -16,8 +16,14 @@ function GameObject:new(type, x, y, opts)
 
   -- Create a trail for gameobject upon creation
   timer:every(0.01, function()
-    createGameObject('Trail', self.x, self.y, {r = 25})
+    createGameObject('Trail', self.x, self.y, {
+      xm = self.xm or 0,
+      ym = self.ym or 0,
+      angle = self.angle or 0,
+      r = 25,
+    })
   end)
+
 end
 
 

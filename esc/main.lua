@@ -17,7 +17,7 @@ function love.load()
   love.mouse.setVisible(false)
 
   game_objects = {}
-  game_object = createGameObject('GameObject', 100, 100)
+  game_object = createGameObject('GameObject', 100, 100, {x = 10, y = 20})
 
   -- Canvases
   main_canvas = love.graphics.newCanvas(320, 240)
@@ -117,6 +117,8 @@ function createGameObject(type, x, y, opts)
   return game_object
 end
 
+-- Get Random Number inside a range
+-------------------------
 function randomp(min, max)
   return (min > max and (love.math.random() * (min -max) + max)) or
          (love.math.random()*(max - min) + min)
@@ -131,8 +133,8 @@ function pushRotate(x, y, r)
   love.graphics.translate(-x, -y)
 end
 
--- Map Function
------------------
+-- Map Function (0.5, 0,1, 0,100) -> 50
+------------------------------------------
 function map(old_value, old_min, old_max, new_min, new_max)
   local new_min = new_min or 0
   local new_max = new_max or 1

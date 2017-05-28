@@ -7,6 +7,7 @@ function Trail:new(type, x, y, opts)
   self.dead = false
   self.x, self.y = x, y
 
+
   -- Assign options
   local opts = opts or {}
   for k,v in pairs(opts) do
@@ -26,7 +27,9 @@ end
 -- Trail Draw
 ----------------------
 function Trail:draw()
-  love.graphics.circle('fill', self.x, self.y, self.r + randomp(-2.5, 2.5))
+  pushRotate(self.x, self.y, self.angle)
+  love.graphics.ellipse('fill', self.x, self.y, self.xm * (self.r + randomp(-2.5, 2.5)), self.ym * (self.r + randomp(-2.5, 2.5)))
+  love.graphics.pop()
 end
 
 -- Return
