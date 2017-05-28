@@ -1,4 +1,5 @@
--- Libs
+-- Imports
+-----------------------------------
 Object = require 'lib/classic'
 Timer = require 'lib/timer'
 Vector = require 'lib/vector'
@@ -9,6 +10,7 @@ Trail = require 'Trail'
 
 
 -- Load Function
+-----------------------
 function love.load()
   timer = Timer()
 
@@ -40,6 +42,7 @@ end
 
 
 -- Update Function
+-----------------------
 function love.update(dt)
   timer:update(dt)
 
@@ -54,6 +57,7 @@ end
 
 
 -- Draw Function
+--------------------
 function love.draw()
   -- Draw Trails to separate Canvas
   love.graphics.setCanvas(trail_canvas)
@@ -65,7 +69,6 @@ function love.draw()
     end
   end
 
-  pushRotate(160, 120, game_object.angle + math.pi/2)
   love.graphics.setBlendMode('subtract')
   for i = -360, 720, 2 do
     love.graphics.line(i, -240, i, 480)
@@ -74,7 +77,6 @@ function love.draw()
     end
   end
   love.graphics.setBlendMode('alpha')
-  love.graphics.pop()
   love.graphics.setCanvas()
 
   -- Draw Gameobjects to separate Canvas
@@ -99,6 +101,7 @@ end
 
 
 -- Mouse Press
+---------------------
 function love.mousepressed(x, y, button)
   if button == 1 then
     -- game_object.dead = true
@@ -107,6 +110,7 @@ end
 
 
 -- Create Game Object
+-------------------------
 function createGameObject(type, x, y, opts)
   local game_object = _G[type](type, x, y, opts)
   table.insert(game_objects, game_object)
@@ -118,9 +122,27 @@ function randomp(min, max)
          (love.math.random()*(max - min) + min)
 end
 
+-- Push Rotate Function
+-----------------
 function pushRotate(x, y, r)
   love.graphics.push()
   love.graphics.translate(x, y)
   love.graphics.rotate(r or 0)
   love.graphics.translate(-x, -y)
+end
+
+-- Map Function
+-----------------
+function map(old_value, old_min, old_max, new_min, new_max)
+  local new_min = new_min or 0
+  local new_max = new_max or 1
+  local new_value = 0
+  local old_range = old_max - old_min
+  if old_range == 0 then new_value = new_min
+  else
+    local new_range = new_max - new_min
+    new_value = (((old_value - old_min) * new_range) / old_range) + new_min
+  end
+
+  return new_value
 end

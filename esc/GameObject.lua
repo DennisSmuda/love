@@ -1,6 +1,7 @@
 local GameObject = Object:extend()
 
-
+-- Game Object Constructor
+--------------------
 function GameObject:new(type, x, y, opts)
   self.type = type
   self.dead = false
@@ -17,22 +18,37 @@ function GameObject:new(type, x, y, opts)
   timer:every(0.01, function()
     createGameObject('Trail', self.x, self.y, {r = 25})
   end)
-
 end
 
-function GameObject:update(dt)
-  timer:update(dt)
 
+-- Update Function
+--------------------
+function GameObject:update(dt)
+  -- Position / Scaling
   local x, y = love.mouse.getPosition()
   self.x, self.y = x/3, y/3
 
-  self.vmag = Vector(self.x - self.previous_x, self.y - self.previous_y):len()
+  -- Angle / Velocity / Magnitude
   self.angle = math.atan2(self.y - self.previous_y, self.x - self.previous_x)
+  self.vmag = Vector(self.x - self.previous_x, self.y - self.previous_y):len()
+
+
+  self.xm = map(self.vmag, 0, 20, 1, 2)
+  self.ym = map(self.vmag, 0, 20, 1, 0.25)
+
   self.previous_x, self.previous_y = self.x, self.y
 end
 
+
+-- Draw Function
+--------------------
 function GameObject:draw()
-  love.graphics.circle('fill', self.x, self.y, 25)
+  pushRotate(self.x, self.y, self.angle)
+  love.graphics.ellipse('fill', self.x, self.y, self.xm*15, self.ym*15)
+  love.graphics.pop()
 end
 
+
+-- Return
+-------------------
 return GameObject
