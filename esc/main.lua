@@ -69,14 +69,6 @@ function love.draw()
     end
   end
 
-  love.graphics.setBlendMode('subtract')
-  for i = -360, 720, 2 do
-    love.graphics.line(i, -240, i, 480)
-    if trail_lines_extra_draw[i] then
-      love.graphics.line(i+1, -240, i+1, 480)
-    end
-  end
-  love.graphics.setBlendMode('alpha')
   love.graphics.setCanvas()
 
   -- Draw Gameobjects to separate Canvas
@@ -90,12 +82,14 @@ function love.draw()
   end
   love.graphics.setCanvas()
 
+  -- Draw Trails and Gameobjects to Main Canvas
   love.graphics.setCanvas(main_canvas)
   love.graphics.clear()
   love.graphics.draw(trail_canvas, 0, 0)
   love.graphics.draw(game_object_canvas, 0, 0)
   love.graphics.setCanvas()
 
+  -- Draw main canvas
   love.graphics.draw(main_canvas, 0, 0, 0, 3, 3)
 end
 

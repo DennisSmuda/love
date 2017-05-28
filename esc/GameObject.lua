@@ -39,8 +39,8 @@ function GameObject:update(dt)
   self.vmag = Vector(self.x - self.previous_x, self.y - self.previous_y):len()
 
 
-  self.xm = map(self.vmag, 0, 20, 1, 2)
-  self.ym = map(self.vmag, 0, 20, 1, 0.25)
+  self.xm = map(self.vmag, 0, 40, 1, 2)
+  self.ym = map(self.vmag, 0, 40, 1, 0.25)
 
   self.previous_x, self.previous_y = self.x, self.y
 end
@@ -50,7 +50,9 @@ end
 --------------------
 function GameObject:draw()
   pushRotate(self.x, self.y, self.angle)
+  love.graphics.setColor(155, 255, 255)
   love.graphics.ellipse('fill', self.x, self.y, self.xm*15, self.ym*15)
+  love.graphics.setColor(255, 255, 255)
   love.graphics.pop()
 end
 
